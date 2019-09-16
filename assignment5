@@ -1,0 +1,159 @@
+mysql> use mydbms;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+1. Display all the Purchase orders of a specific Customer.
+
+
+mysql> select * from orders where c_id=1;
++------+------+------+---------------------+----------+------+
+| o_id | c_id | p_id | date_time           | totalAmt | qty  |
++------+------+------+---------------------+----------+------+
+| 1000 |    1 |  100 | 2019-09-12 12:09:56 |     3000 |    1 |
+| 1000 |    1 |  101 | 2019-08-19 16:56:12 |     1000 |    2 |
++------+------+------+---------------------+----------+------+
+2 rows in set (0.02 sec)
+
+
+2.Get Customer and Data Item Information for a Specific Purchase Order.
+
+
+mysql> select c_id, p_id from orders where o_id=1003;
++------+------+
+| c_id | p_id |
++------+------+
+|    3 |  105 |
++------+------+
+1 row in set (0.00 sec)
+
+
+3.Get the Total Value of Purchase Orders.
+
+
+
+mysql> select totalamt from orders;
++----------+
+| totalamt |
++----------+
+|     3000 |
+|     1000 |
+|     1000 |
+|      300 |
+|      160 |
+|     1000 |
+|     1000 |
+|     1500 |
+|      500 |
++----------+
+9 rows in set (0.00 sec)
+
+mysql> select sum(totalamt) from orders;
++---------------+
+| sum(totalamt) |
++---------------+
+|          9460 |
++---------------+
+1 row in set (0.00 sec)
+
+
+4.List the Purchase Orders in descending order as per total.
+
+
+
+mysql> select * from orders order by totalamt desc;
++------+------+------+---------------------+----------+------+
+| o_id | c_id | p_id | date_time           | totalAmt | qty  |
++------+------+------+---------------------+----------+------+
+| 1000 |    1 |  100 | 2019-09-12 12:09:56 |     3000 |    1 |
+| 1005 |    5 |  107 | 2019-01-01 02:03:04 |     1500 |    1 |
+| 1000 |    1 |  101 | 2019-08-19 16:56:12 |     1000 |    2 |
+| 1001 |    2 |  102 | 2019-10-10 09:21:12 |     1000 |    1 |
+| 1003 |    3 |  105 | 2019-04-04 09:12:12 |     1000 |    5 |
+| 1004 |    4 |  106 | 2019-08-08 08:08:08 |     1000 |    2 |
+| 1005 |    5 |  108 | 2019-02-02 04:05:06 |      500 |    2 |
+| 1002 |    2 |  103 | 2019-09-09 13:13:13 |      300 |    2 |
+| 1002 |    2 |  104 | 2019-12-12 09:09:09 |      160 |    2 |
++------+------+------+---------------------+----------+------+
+9 rows in set (0.00 sec)
+
+
+5.Display the name of customers whose first name starts with “Rav”. (String matching
+:Like operator)
+
+
+
+mysql> select c_name from customers where c_name like "Rag%";
++--------+
+| c_name |
++--------+
+| Ragini |
+| Raghav |
++--------+
+2 rows in set (0.00 sec)
+
+
+6.Display order details of customer whose city name is “Pune” and purchase date is
+“22/08/2016” (Boolean Operators: and, or)
+
+
+
+mysql> select o_id,orders.c_id,p_id,date_time,totalAmt,qty from orders,customers where date_time='2019-01-01 02:03:04' and address='Pune';
++------+------+------+---------------------+----------+------+
+| o_id | c_id | p_id | date_time           | totalAmt | qty  |
++------+------+------+---------------------+----------+------+
+| 1005 |    5 |  107 | 2019-01-01 02:03:04 |     1500 |    1 |
++------+------+------+---------------------+----------+------+
+1 row in set (0.00 sec)
+
+
+7. Delete Purchase order 1003;
+
+
+mysql> delete from orders where o_id=1003;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from orders;
++------+------+------+---------------------+----------+------+
+| o_id | c_id | p_id | date_time           | totalAmt | qty  |
++------+------+------+---------------------+----------+------+
+| 1000 |    1 |  100 | 2019-09-12 12:09:56 |     3000 |    1 |
+| 1000 |    1 |  101 | 2019-08-19 16:56:12 |     1000 |    2 |
+| 1001 |    2 |  102 | 2019-10-10 09:21:12 |     1000 |    1 |
+| 1002 |    2 |  103 | 2019-09-09 13:13:13 |      300 |    2 |
+| 1002 |    2 |  104 | 2019-12-12 09:09:09 |      160 |    2 |
+| 1004 |    4 |  106 | 2019-08-08 08:08:08 |     1000 |    2 |
+| 1005 |    5 |  107 | 2019-01-01 02:03:04 |     1500 |    1 |
+| 1005 |    5 |  108 | 2019-02-02 04:05:06 |      500 |    2 |
++------+------+------+---------------------+----------+------+
+8 rows in set (0.00 sec)
+
+
+
+
+8.Add discount of 5% to all the customers whose order is more than Rs. 1000/-.
+(Arithmetic Operators +, -, *, /)
+
+
+
+mysql> update orders set totalAmt= totalAmt - (totalAmt*0.05) where totalAmt>1000;
+Query OK, 2 rows affected (0.06 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from orders;
++------+------+------+---------------------+----------+------+
+| o_id | c_id | p_id | date_time           | totalAmt | qty  |
++------+------+------+---------------------+----------+------+
+| 1000 |    1 |  100 | 2019-09-12 12:09:56 |     2850 |    1 |
+| 1000 |    1 |  101 | 2019-08-19 16:56:12 |     1000 |    2 |
+| 1001 |    2 |  102 | 2019-10-10 09:21:12 |     1000 |    1 |
+| 1002 |    2 |  103 | 2019-09-09 13:13:13 |      300 |    2 |
+| 1002 |    2 |  104 | 2019-12-12 09:09:09 |      160 |    2 |
+| 1004 |    4 |  106 | 2019-08-08 08:08:08 |     1000 |    2 |
+| 1005 |    5 |  107 | 2019-01-01 02:03:04 |     1425 |    1 |
+| 1005 |    5 |  108 | 2019-02-02 04:05:06 |      500 |    2 |
++------+------+------+---------------------+----------+------+
+8 rows in set (0.00 sec)
+
+

@@ -1,0 +1,366 @@
+ASSIGNMENT 11
+
+
+Write DDL statements to create VIEWS on single and multiple tables from above DB.
+
+	a.Single table view
+	
+	
+	mysql> create view view_test as select c_id,c_name from customers 		order by c_id;
+	Query OK, 0 rows affected (0.03 sec)
+
+	mysql> select * from view_test;
+	+------+--------+
+	| c_id | c_name |
+	+------+--------+
+	|    1 | Rohan  |
+	|    2 | Preeti |
+	|    3 | Ragini |
+	|    4 | Raghav |
+	|    5 | Kabir  |
+	+------+--------+
+	5 rows in set (0.00 sec)
+	
+	
+	
+	b.Multiple table view
+	
+	
+	mysql> create view  view_test2 as select customers.c_id,customers.c_name,orders.o_id from customers , orders where customers.c_id= 	orders.c_id;
+	Query OK, 0 rows affected (0.03 sec)
+	
+	mysql> select * from view_test2;
+	+------+--------+------+
+	| c_id | c_name | o_id |
+	+------+--------+------+
+	|    1 | Rohan  | 1000 |
+	|    1 | Rohan  | 1000 |
+	|    2 | Preeti | 1001 |
+	|    2 | Preeti | 1002 |
+	|    2 | Preeti | 1002 |
+	|    4 | Raghav | 1004 |
+	|    5 | Kabir  | 1005 |
+	|    5 | Kabir  | 1005 |
+	+------+--------+------+
+	8 rows in set (0.02 sec)
+	
+	
+	
+	**************PERFORM THE FOLLOWING OPERATIONS AND CHECK ON VIEW******************
+	
+	1.Insert new record in the base table.
+	
+	
+	mysql> insert into customers values (6,'Anushka','anushka@gmail.com',9876543210,'Pune');
+	Query OK, 1 row affected (0.05 sec)
+
+	mysql> insert into orders values(1006,6,100,'2019-02-02 01:10:10',1);
+	Query OK, 1 row affected (0.05 sec)
+
+	mysql> select * from view_test2;
+	+------+---------+------+
+	| c_id | c_name  | o_id |
+	+------+---------+------+
+	|    1 | Rohan   | 1000 |
+	|    1 | Rohan   | 1000 |
+	|    2 | Preeti  | 1001 |
+	|    2 | Preeti  | 1002 |
+	|    2 | Preeti  | 1002 |
+	|    4 | Raghav  | 1004 |
+	|    5 | Kabir   | 1005 |
+	|    5 | Kabir   | 1005 |
+	|    6 | Anushka | 1006 |
+	+------+---------+------+
+	9 rows in set (0.00 sec)
+	
+	
+	
+	2.Update in the base table
+	
+	
+	mysql> update customers 
+   		 -> set c_name='Raghaav' where c_id=4;
+	Query OK, 1 row affected (0.05 sec)
+	Rows matched: 1  Changed: 1  Warnings: 0
+
+	mysql> select * from customers;
++------+---------+-------------------+------------+----------+
+| c_id | c_name  | email             | contact    | address  |
++------+---------+-------------------+------------+----------+
+|    1 | Rohan   | rohan54@gmail.com | 7689504321 | Pune     |
+|    2 | Preeti  | pre@hotmail.com   | 9801238572 | Banglore |
+|    3 | Ragini  | ragin@rediff.com  | 8749012356 | Mumbai   |
+|    4 | Raghaav | ragraj@yahoo.com  | 7812399965 | Banglore |
+|    5 | Kabir   | kabir@gmail.com   | 7123890126 | Delhi    |
+|    6 | Anushka | anushka@gmail.com | 9876543210 | Pune     |
++------+---------+-------------------+------------+----------+
+6 rows in set (0.00 sec)
+
+	mysql> select * from view_test2;
++------+---------+------+
+| c_id | c_name  | o_id |
++------+---------+------+
+|    1 | Rohan   | 1000 |
+|    1 | Rohan   | 1000 |
+|    2 | Preeti  | 1001 |
+|    2 | Preeti  | 1002 |
+|    2 | Preeti  | 1002 |
+|    4 | Raghaav | 1004 |
+|    5 | Kabir   | 1005 |
+|    5 | Kabir   | 1005 |
+|    6 | Anushka | 1006 |
++------+---------+------+
+9 rows in set (0.00 sec)
+
+	mysql> select * from view_test;
++------+---------+
+| c_id | c_name  |
++------+---------+
+|    1 | Rohan   |
+|    2 | Preeti  |
+|    3 | Ragini  |
+|    4 | Raghaav |
+|    5 | Kabir   |
+|    6 | Anushka |
++------+---------+
+6 rows in set (0.00 sec)
+
+
+
+	3.Delete record in the base table.
+	
+	
+	
+	
+	mysql> delete from orders where c_id=4;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> delete from customers where c_id=4;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from customers;
++------+---------+-------------------+------------+----------+
+| c_id | c_name  | email             | contact    | address  |
++------+---------+-------------------+------------+----------+
+|    1 | Rohan   | rohan54@gmail.com | 7689504321 | Pune     |
+|    2 | Preeti  | pre@hotmail.com   | 9801238572 | Banglore |
+|    3 | Ragini  | ragin@rediff.com  | 8749012356 | Mumbai   |
+|    5 | Kabir   | kabir@gmail.com   | 7123890126 | Delhi    |
+|    6 | Anushka | anushka@gmail.com | 9876543210 | Pune     |
++------+---------+-------------------+------------+----------+
+5 rows in set (0.01 sec)
+
+mysql> select * from view_test;
++------+---------+
+| c_id | c_name  |
++------+---------+
+|    1 | Rohan   |
+|    2 | Preeti  |
+|    3 | Ragini  |
+|    5 | Kabir   |
+|    6 | Anushka |
++------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from view_test2;
++------+---------+------+
+| c_id | c_name  | o_id |
++------+---------+------+
+|    1 | Rohan   | 1000 |
+|    1 | Rohan   | 1000 |
+|    2 | Preeti  | 1001 |
+|    2 | Preeti  | 1002 |
+|    2 | Preeti  | 1002 |
+|    5 | Kabir   | 1005 |
+|    5 | Kabir   | 1005 |
+|    6 | Anushka | 1006 |
++------+---------+------+
+8 rows in set (0.00 sec)
+
+
+
+	
+	4.DML on VIEW.
+	
+	
+			***********SELECT***********
+		
+		
+		mysql> select c_name from view_test2 where o_id=1005;
+		+--------+
+		| c_name |
+		+--------+
+		| Kabir  |
+		| Kabir  |
+		+--------+
+		2 rows in set (0.00 sec)
+		
+		
+		mysql> select max(c_name) from view_test2 where o_id=1005;
+		+-------------+
+		| max(c_name) |
+		+-------------+
+		| Kabir       |
+		+-------------+
+		1 row in set (0.00 sec)
+
+		
+
+				**********INSERT**********
+		
+		******for single table view*********
+		
+		mysql> insert into view_test values (4,'Raghav');
+		Query OK, 1 row affected (0.04 sec)
+
+		mysql> select * from view_test;
+		+------+---------+
+		| c_id | c_name  |
+		+------+---------+
+		|    1 | Rohan   |
+		|    2 | Preeti  |
+		|    3 | Ragini  |
+		|    4 | Raghav  |
+		|    5 | Kabir   |
+		|    6 | Anushka |
+		+------+---------+
+		6 rows in set (0.00 sec)
+		
+		
+		
+		*******for multiple table view**********
+		
+		
+		
+		mysql> insert into view_test2(c_id,c_name)  values (4,'Raghav');
+		Query OK, 1 row affected (0.04 sec)
+
+		
+		mysql> select * from customers;
+		+------+---------+-------------------+------------+----------+
+		| c_id | c_name  | email             | contact    | address  |
+		+------+---------+-------------------+------------+----------+
+		|    1 | Rohan   | rohan54@gmail.com | 7689504321 | Pune     |
+		|    2 | Preeti  | pre@hotmail.com   | 9801238572 | Banglore |
+		|    3 | Ragini  | ragin@rediff.com  | 8749012356 | Mumbai   |
+		|    4 | Raghav  | NULL              |       NULL | NULL     |
+		|    5 | Kabir   | kabir@gmail.com   | 7123890126 | Delhi    |
+		|    6 | Anushka | anushka@gmail.com | 9876543210 | Pune     |
+		+------+---------+-------------------+------------+----------+
+		6 rows in set (0.00 sec)
+		
+		
+		
+		mysql> insert into orders(c_id,o_id,p_id) values (4,1004,100);
+		Query OK, 1 row affected (0.05 sec)
+
+		mysql> select * from orders;
+		+------+------+------+---------------------+------+
+		| o_id | c_id | p_id | date_time           | qty  |
+		+------+------+------+---------------------+------+
+		| 1000 |    1 |  100 | 2019-09-12 12:09:56 |    1 |
+		| 1000 |    1 |  101 | 2019-08-19 16:56:12 |    2 |
+		| 1001 |    2 |  102 | 2019-10-10 09:21:12 |    1 |
+		| 1002 |    2 |  103 | 2019-09-09 13:13:13 |    2 |
+		| 1002 |    2 |  104 | 2019-12-12 09:09:09 |    2 |
+		| 1004 |    4 |  100 | NULL                | NULL |
+		| 1005 |    5 |  107 | 2019-01-01 02:03:04 |    1 |
+		| 1005 |    5 |  108 | 2019-02-02 04:05:06 |    2 |
+		| 1006 |    6 |  100 | 2019-02-02 01:10:10 |    1 |
+		+------+------+------+---------------------+------+
+		9 rows in set (0.00 sec)
+
+		mysql> select * from view_test2;
+		+------+---------+------+
+		| c_id | c_name  | o_id |
+		+------+---------+------+
+		|    1 | Rohan   | 1000 |
+		|    1 | Rohan   | 1000 |
+		|    2 | Preeti  | 1001 |
+		|    2 | Preeti  | 1002 |
+		|    2 | Preeti  | 1002 |
+		|    4 | Raghav  | 1004 |
+		|    5 | Kabir   | 1005 |
+		|    5 | Kabir   | 1005 |
+		|    6 | Anushka | 1006 |
+		+------+---------+------+
+		9 rows in set (0.00 sec)
+		
+		
+		
+		******UPDATE******
+		
+		
+		
+		mysql> update view_test2 set o_id=10004 where c_id=4;
+		Query OK, 1 row affected (0.04 sec)
+		Rows matched: 1  Changed: 1  Warnings: 0
+
+		mysql> select * from view_test2;
+		+------+---------+-------+
+		| c_id | c_name  | o_id  |
+		+------+---------+-------+
+		|    1 | Rohan   |  1000 |
+		|    1 | Rohan   |  1000 |
+		|    2 | Preeti  |  1001 |
+		|    2 | Preeti  |  1002 |
+		|    2 | Preeti  |  1002 |
+		|    4 | Raghava | 10004 |
+		|    5 | Kabir   |  1005 |
+		|    5 | Kabir   |  1005 |
+		|    6 | Anushka |  1006 |
+		+------+---------+-------+
+		9 rows in set (0.00 sec)
+
+		mysql> update view_test2 set o_id=1004 where c_id=4;
+		Query OK, 1 row affected (0.05 sec)
+		Rows matched: 1  Changed: 1  Warnings: 0
+
+		mysql> select * from view_test2;
+		+------+---------+------+
+		| c_id | c_name  | o_id |
+		+------+---------+------+
+		|    1 | Rohan   | 1000 |
+		|    1 | Rohan   | 1000 |
+		|    2 | Preeti  | 1001 |
+		|    2 | Preeti  | 1002 |
+		|    2 | Preeti  | 1002 |
+		|    4 | Raghava | 1004 |
+		|    5 | Kabir   | 1005 |
+		|    5 | Kabir   | 1005 |
+		|    6 | Anushka | 1006 |
+		+------+---------+------+
+		9 rows in set (0.00 sec)
+
+		
+		
+		
+
+		
+		
+		
+
+				
+		
+		
+
+		
+		
+			
+
+
+	
+	
+
+
+	
+	
+	
+	
+
+	
+
+	
+
+	
+

@@ -1,0 +1,75 @@
+ASSIGNMENT 7
+
+
+A.)
+
+	1.Get order details of products which are not from electronics and basics category.
+
+
+
+mysql> select orders.c_id,orders.p_id,orders.o_id,orders.totalAmt,orders.date_time,orders.qty,products.p_name from orders inner join products on orders.p_id=products.p_id where products.category not in ('Electronics','Basics');
++------+------+------+----------+---------------------+------+--------------+
+| c_id | p_id | o_id | totalAmt | date_time           | qty  | p_name       |
++------+------+------+----------+---------------------+------+--------------+
+|    2 |  102 | 1001 |     1000 | 2019-10-10 09:21:12 |    1 | Lip-set      |
+|    2 |  103 | 1002 |      300 | 2019-09-09 13:13:13 |    2 | Makeup-brush |
+|    2 |  104 | 1002 |      160 | 2019-12-12 09:09:09 |    2 | Penstand     |
++------+------+------+----------+---------------------+------+--------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+	2.Get the name and quantity of product which have either 10 or 20 or 30 quantities.
+	
+	
+	
+mysql> select orders.qty,customers.c_name from orders inner join customers on orders.c_id=customers.c_id where orders.qty=1;
++------+--------+
+| qty  | c_name |
++------+--------+
+|    1 | Rohan  |
+|    1 | Preeti |
+|    1 | Kabir  |
++------+--------+
+3 rows in set (0.00 sec)
+
+
+
+
+B.)
+
+	1.Get the product details whose product price is more than “Apple 7”
+	
+	
+	
+	mysql> select * from products where cost>(select cost from products where p_name='Pen-drive');
++------+------------+------+-------+-------------+
+| p_id | p_name     | cost | stock | category    |
++------+------------+------+-------+-------------+
+|  100 | Headphones | 3000 |    40 | Electronics |
+|  102 | Lip-set    | 1000 |   200 | Beauty      |
+|  107 | Sunglasses | 1500 |   100 | Basics      |
++------+------------+------+-------+-------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+	2.Find the purchase order whose purchase amount is greater than maximum purchase
+amount.
+
+
+
+	mysql> select * from orders where totalAmt=(select max(totalAmt) from orders);
++------+------+------+---------------------+----------+------+
+| o_id | c_id | p_id | date_time           | totalAmt | qty  |
++------+------+------+---------------------+----------+------+
+| 1000 |    1 |  100 | 2019-09-12 12:09:56 |     2850 |    1 |
++------+------+------+---------------------+----------+------+
+1 row in set (0.00 sec)
+
+
+

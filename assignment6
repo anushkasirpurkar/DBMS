@@ -1,0 +1,167 @@
+ASSIGNMENT 6
+
+A.)
+	1.Get the total no of customers.
+
+
+mysql> select count(*) from customers;
++----------+
+| count(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.05 sec)
+
+
+	2.Display average purchase amount of all the customers.
+	
+	
+
+mysql> select avg(totalAmt) 'Average' from orders;
++-----------+
+| Average   |
++-----------+
+| 1029.3750 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select avg(totalAmt) 'Average' from orders where c_id=1;
++-----------+
+| Average   |
++-----------+
+| 1925.0000 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select avg(totalAmt) 'Average' from orders where c_id=2;
++----------+
+| Average  |
++----------+
+| 486.6667 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select avg(totalAmt) 'Average' from orders where c_id=3;
++---------+
+| Average |
++---------+
+|    NULL |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select avg(totalAmt) 'Average' from orders where c_id=4;
++-----------+
+| Average   |
++-----------+
+| 1000.0000 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select avg(totalAmt) 'Average' from orders where c_id=5;
++----------+
+| Average  |
++----------+
+| 962.5000 |
++----------+
+1 row in set (0.00 sec)
+
+
+
+	3.Display total purchase amount of all the customers.
+	
+	
+
+mysql> select sum(totalAmt) from orders;
++---------------+
+| sum(totalAmt) |
++---------------+
+|          8235 |
++---------------+
+1 row in set (0.00 sec)
+
+
+B.)
+
+	1.Find DAYNAME, MONTHNAME and YEAR of the purchase order made on “01-01-2019”
+	
+
+mysql> select day ('2019-01-01 02:03:04');
++-----------------------------+
+| day ('2019-01-01 02:03:04') |
++-----------------------------+
+|                           1 |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select month ('2019-01-01 02:03:04');
++-------------------------------+
+| month ('2019-01-01 02:03:04') |
++-------------------------------+
+|                             1 |
++-------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select year ('2019-01-01 02:03:04');
++------------------------------+
+| year ('2019-01-01 02:03:04') |
++------------------------------+
+|                         2019 |
++------------------------------+
+1 row in set (0.00 sec)
+
+
+
+	2.Get current date & time, current time, current date.
+	
+	
+	
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2019-07-24 11:46:04 |
++---------------------+
+1 row in set (0.00 sec)
+
+
+
+	3.Get 6 month future & past date using interval function based on current date and name the column accordingly.
+
+
+
+mysql> SELECT      DATE_ADD('2000-01-01 01:01:01', INTERVAL 6 MONTH) after_6_months;
++---------------------+
+| after_6_months      |
++---------------------+
+| 2000-07-01 01:01:01 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT      DATE_ADD('2000-01-01 01:01:01', INTERVAL -6 MONTH) before_6_months;
++---------------------+
+| before_6_months     |
++---------------------+
+| 1999-07-01 01:01:01 |
++---------------------+
+1 row in set (0.00 sec)
+
+
+
+	4.Find purchase details of the customers group by product category.
+	
+	
+	
+	
+	5.Find the purchase details of all the customers who made shopping today.(Using having clause)
+	
+	
+	
+mysql> select * from orders having date_time = ' 2019-02-02 04:05:06 ';
++------+------+------+---------------------+----------+------+
+| o_id | c_id | p_id | date_time           | totalAmt | qty  |
++------+------+------+---------------------+----------+------+
+| 1005 |    5 |  108 | 2019-02-02 04:05:06 |      500 |    2 |
++------+------+------+---------------------+----------+------+
+1 row in set (0.00 sec)
+
+

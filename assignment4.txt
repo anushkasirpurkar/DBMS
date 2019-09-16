@@ -1,0 +1,114 @@
+PROBLEM STATEMENT:
+Design & Develop DB for “Order Management System” with all the constraints. (There must be
+At least 3 entities and relationships between them.)
+The statement should use SQL objects such as Table, View, Index, and Sequence.
+Draw suitable ER/EER diagram for the system.
+Apply DCL and DDL commands to convert ER/EER diagram to tables.
+
+
+mllab15@mllab15:~$ sudo mysql -u root -p
+[sudo] password for mllab15: 
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 5.7.26-0ubuntu0.16.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database mydbms;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databses;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databses' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| NHL                |
+| album              |
+| artists            |
+| assign1            |
+| company            |
+| medical            |
+| menagerie          |
+| music              |
+| musician           |
+| mydbms             |
+| mysql              |
+| order1             |
+| order_management   |
+| performance_schema |
+| practice           |
+| restaurant         |
+| restraunt          |
+| saharaordermanage  |
+| sam                |
+| samp               |
+| sampada            |
+| stud               |
+| sys                |
+| test               |
++--------------------+
+25 rows in set (0.00 sec)
+
+mysql> use mydbms;
+Database changed
+mysql> create table customers(c_id int(5) not null,c_name varchar(20),email varchar(20), contact bigint,address varchar(20));
+Query OK, 0 rows affected (0.37 sec)
+
+mysql> alter table customers
+    -> add primary key(c_id);
+Query OK, 0 rows affected (0.64 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> create table products(p_id int(5) not null,p_name varchar(20),cost int(5),stock int(5),primary key(p_id));
+Query OK, 0 rows affected (0.54 sec)
+
+mysql> create table orders(o_id int(5) not null,c_id int(5) not null,p_id int(5) not null,date_time datetime,totalAmt int(5),qty int(5),primary key(o_id,c_id,p_id),foreign key(c_id) references customers(c_id),foreign key(p_id) references products(p_id));
+Query OK, 0 rows affected (0.38 sec)
+
+mysql> select * from customers;                                                           Empty set (0.00 sec)
+
+mysql> describe customers;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| c_id    | int(5)      | NO   | PRI | NULL    |       |
+| c_name  | varchar(20) | YES  |     | NULL    |       |
+| email   | varchar(20) | YES  |     | NULL    |       |
+| contact | bigint(20)  | YES  |     | NULL    |       |
+| address | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> describe products;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| p_id   | int(5)      | NO   | PRI | NULL    |       |
+| p_name | varchar(20) | YES  |     | NULL    |       |
+| cost   | int(5)      | YES  |     | NULL    |       |
+| stock  | int(5)      | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> describe orders;
++-----------+----------+------+-----+---------+-------+
+| Field     | Type     | Null | Key | Default | Extra |
++-----------+----------+------+-----+---------+-------+
+| o_id      | int(5)   | NO   | PRI | NULL    |       |
+| c_id      | int(5)   | NO   | PRI | NULL    |       |
+| p_id      | int(5)   | NO   | PRI | NULL    |       |
+| date_time | datetime | YES  |     | NULL    |       |
+| totalAmt  | int(5)   | YES  |     | NULL    |       |
+| qty       | int(5)   | YES  |     | NULL    |       |
++-----------+----------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
